@@ -1,0 +1,5 @@
+services:
+  api:
+    image: link-store-api
+    ports:
+      - ${PORT}: 3000
