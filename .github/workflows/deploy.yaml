@@ -1,0 +1,29 @@
+name: Deploy
+on:
+  push:
+    branches: main
+
+env:
+  IMAGE_NAME: link-store-api
+  IMAGE_TAG: latest
+  PORT: 3002
+
+jobs:
+  Build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Build docker image
+        run: |
+          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+        
+      - name: Login to docker hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrects.DOCKER_USERNAME }}
+          password: ${{ secrects.DOCKER_PASSWORD }}
+
+      - name: Push to docker hub
+        run: docker push $IMAGE_NAME:$IMAGE_TAG
